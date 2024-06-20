@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inkubator Bayi Bajang</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000; /* Changed to black */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            margin: 20px;
+        }
+        .camera-container, .table-container {
+            width: 45%;
+            padding: 20px;
+            background-color: #333; /* Changed to dark gray for contrast */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            color: #fff; /* Changed to white */
+            text-align: center;
+            margin-top: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #444; /* Changed to dark gray */
+            text-align: center;
+            color: #fff; /* Changed to white */
+        }
+        th {
+            background-color: #ffc107;
+            color: #333;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #444; /* Dark gray for even rows */
+        }
+        tr:nth-child(odd) {
+            background-color: #555; /* Slightly lighter dark gray for odd rows */
+        }
+        tr:hover {
+            background-color: #666; /* Lighter dark gray on hover */
+        }
+        iframe {
+            width: 100%;
+            height: 480px;
+            border: none;
+            border-radius: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function fetchData() {
+                $.ajax({
+                    url: 'get_data.php',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        var tableContent = '<table><tr><th>Temperature (C)</th><th>Humidity (%)</th><th>Weight (kg)</th><th>Timestamp</th></tr>';
+                        $.each(data, function(index, row) {
+                            tableContent += '<tr><td>' + row.temperature + '</td><td>' + row.humidity + '</td><td>' + row.weight + '</td><td>' + row.timestamp + '</td></tr>';
+                        });
+                        tableContent += '</table>';
+                        $('#dataTable').html(tableContent);
+                    }
+                });
+            }
+
+            fetchData(); // Fetch data on page load
+
+            setInterval(fetchData, 5000); // Fetch data every 5 seconds
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="camera-container">
+            <h1>Tampilan Kamera</h1>
+            <iframe src="http://192.168.57.154"></iframe>
+        </div>
+        <div class="table-container">
+            <h1>Inkubator Bayi Bajang</h1>
+            <div id="dataTable"></div>
+        </div>
+    </div>
+</body>
+</html>
